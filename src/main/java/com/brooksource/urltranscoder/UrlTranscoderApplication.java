@@ -1,4 +1,4 @@
-package com.brooksource.url_transcoder;
+package com.brooksource.urltranscoder;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class UrlTranscoderApplication {
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		SpringApplication.run(UrlTranscoderApplication.class, args);
 	}
 

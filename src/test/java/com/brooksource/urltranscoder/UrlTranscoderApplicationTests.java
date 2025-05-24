@@ -1,4 +1,4 @@
-package com.brooksource.url_transcoder;
+package com.brooksource.urltranscoder;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
