@@ -37,10 +37,8 @@ public class URLRepository implements IURLRepository{
     @Override
     public Optional<String> findURLByKey(final String key) {
 
-
-
-
-        return Optional.empty();
+        String value = this.datastore.get(key);
+        return Optional.ofNullable(value);
     }
 
     /**

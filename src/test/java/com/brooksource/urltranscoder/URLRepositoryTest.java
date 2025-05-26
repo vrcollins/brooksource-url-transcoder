@@ -3,6 +3,8 @@ package com.brooksource.urltranscoder;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -47,5 +49,19 @@ class URLRepositoryTest {
         boolean theTest = this.repository.addURL("1", "http://someurl");
         assertFalse(theTest);
     }
+
+    @Test
+    void findURLByKey() {
+        this.repository.addURL("1", "http://someurl");
+        Optional<String> result = this.repository.findURLByKey("1");
+        assertTrue(result.isPresent());
+    }
+
+    @Test
+    void findURLByKeyEmpty() {
+        Optional<String> result = this.repository.findURLByKey("1");
+        assertTrue(result.isEmpty());
+    }
+
 
 }
