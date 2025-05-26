@@ -63,5 +63,21 @@ class URLRepositoryTest {
         assertTrue(result.isEmpty());
     }
 
+    @Test
+    void findKeyByURL() {
+
+        this.repository.addURL("1", "http://someurl");
+        Optional<String> result = this.repository.findURLByValue("http://someurl");
+        assertTrue(result.isPresent());
+    }
+
+    @Test
+    void findKeyByURLNotFound() {
+
+        this.repository.addURL("1", "http://someurl");
+        Optional<String> result = this.repository.findURLByValue("http://anotherurl");
+        assertTrue(result.isEmpty());
+    }
+
 
 }

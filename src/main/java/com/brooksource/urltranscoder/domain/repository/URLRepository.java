@@ -3,6 +3,7 @@ package com.brooksource.urltranscoder.domain.repository;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -46,8 +47,7 @@ public class URLRepository implements IURLRepository{
      */
     @Override
     public Optional<String> findURLByValue(final String value) {
-        // TODO Auto-generated method stub
-        return Optional.empty();
+        return this.findKeyByValue(value);
     }
 
     /**
@@ -62,6 +62,25 @@ public class URLRepository implements IURLRepository{
             this.datastore.put(key, url);
             return true;
         }
+    }
+
+    protected Optional<String> findKeyByValue(final String value) {
+
+        /*for (Map.Entry<String, String> entry : this.datastore.entrySet()) {
+            if (entry.getValue().equals(value)) {
+                return entry.getKey();
+            }
+        }
+        return null; */
+
+        Stream<String> key = this.datastore
+                .entrySet()
+                .stream()
+                .filter(entry -> value.equals(entry.getValue()))
+                .map(Map.Entry::getKey);
+
+        return key.findFirst();
+
     }
 
 }
