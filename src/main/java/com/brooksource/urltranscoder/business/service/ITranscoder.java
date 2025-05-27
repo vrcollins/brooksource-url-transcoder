@@ -3,6 +3,7 @@ package com.brooksource.urltranscoder.business.service;
 import java.util.Optional;
 
 import com.brooksource.urltranscoder.business.exception.URLAlreadyExistsException;
+import com.brooksource.urltranscoder.business.exception.URLNotFoundException;
 
 /**
  * <pre>
@@ -39,6 +40,6 @@ public interface ITranscoder {
      * @param url - string to be decoded
      * @return Optional - URL String that has been decoded
      */
-    Optional<String> decode(String url);
+    Optional<String> decode(final String url) throws URLNotFoundException;
 
 }

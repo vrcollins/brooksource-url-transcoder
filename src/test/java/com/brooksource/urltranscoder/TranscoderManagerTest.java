@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.annotation.Order;
 
 import com.brooksource.urltranscoder.business.exception.URLAlreadyExistsException;
+import com.brooksource.urltranscoder.business.exception.URLNotFoundException;
 import com.brooksource.urltranscoder.business.service.ITranscoder;
 
 /**
@@ -70,6 +71,37 @@ class TranscoderManagerTest {
             assertNotNull(ex.getUrl());
             System.out.println(ex.getUrl());
         }
+     }
 
-    }
+    @Test
+    @Order(3)
+    void dencoderSuccessTest() throws URLNotFoundException, URLAlreadyExistsException {
+
+        try {
+            Optional<String> url = this.manager.encode("http://dcodesurl.com");
+            System.out.println(url.get());
+            String decodeUrl = url.get();
+
+            Optional<String> url2 = this.manager.decode(decodeUrl);
+            System.out.println(url2.get());
+        }
+        catch(URLNotFoundException ex) {
+            assertNotNull(ex);
+        }
+     }
+
+    @Test
+    @Order(4)
+    void dencoderNotFoundTest() throws URLNotFoundException {
+
+        try {
+            final String decodeURL = "http://short.ext/lf0ItUrVSg";
+
+            Optional<String> url2 = this.manager.decode(decodeURL);
+            System.out.println(url2.get());
+        }
+        catch(URLNotFoundException ex) {
+            assertNotNull(ex);
+        }
+     }
 }

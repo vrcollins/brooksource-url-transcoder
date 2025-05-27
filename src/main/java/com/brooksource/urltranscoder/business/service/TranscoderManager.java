@@ -2,6 +2,7 @@ package com.brooksource.urltranscoder.business.service;
 
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.brooksource.urltranscoder.business.exception.URLAlreadyExistsException;
+import com.brooksource.urltranscoder.business.exception.URLNotFoundException;
 import com.brooksource.urltranscoder.domain.repository.IURLRepository;
 
 /**
@@ -71,10 +73,19 @@ public class TranscoderManager implements ITranscoder{
         }
     }
 
+    /**
+     * @see com.brooksource.urltranscoder.business.service.ITranscoder#decode(String)
+     */
     @Override
-    public Optional<String> decode(final String url) {
-        // TODO Auto-generated method stub
-        return Optional.empty();
+    public Optional<String> decode(final String url) throws URLNotFoundException {
+
+        final String key = StringUtils.substringAfter(url, BASE_URL);
+        final Optional<String> result = this.repository.findURLByKey(key);
+
+        if (result.isPresent())
+            return  this.repository.findURLByKey(key);
+        else
+            throw new URLNotFoundException();
     }
 
 }
