@@ -66,13 +66,6 @@ public class URLRepository implements IURLRepository{
 
     protected Optional<String> findKeyByValue(final String value) {
 
-        /*for (Map.Entry<String, String> entry : this.datastore.entrySet()) {
-            if (entry.getValue().equals(value)) {
-                return entry.getKey();
-            }
-        }
-        return null; */
-
         Stream<String> key = this.datastore
                 .entrySet()
                 .stream()
