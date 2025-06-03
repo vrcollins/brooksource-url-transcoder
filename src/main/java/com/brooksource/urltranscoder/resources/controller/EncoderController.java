@@ -35,14 +35,14 @@ import com.brooksource.urltranscoder.model.response.URLResponse;
  * @version <b>0.1.0</b>
  */
 @RestController
-@Scope(proxyMode = ScopedProxyMode.INTERFACES)
+@Scope(proxyMode = ScopedProxyMode.DEFAULT)
 public class EncoderController {
 
     @Autowired
     @Qualifier("transcoderManager")
     private ITranscoder manager;
 
-    @PostMapping("/encoding")
+    @PostMapping(value = "/encode", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Object> addURL (@RequestBody final URLRequest request) {
 
         try {
@@ -52,8 +52,8 @@ public class EncoderController {
             return new ResponseEntity<>(url, HttpStatus.CREATED);
         }
         catch (URLAlreadyExistsException ex) {
-            ex.getUrl();
             URLResponse response = new URLResponse();
+            response.setUrl(ex.getUrl());
             return new ResponseEntity<>(response, HttpStatus.ALREADY_REPORTED);
         }
 

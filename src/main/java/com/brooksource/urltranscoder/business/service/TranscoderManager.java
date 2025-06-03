@@ -83,7 +83,7 @@ public class TranscoderManager implements ITranscoder{
         final Optional<String> result = this.repository.findURLByKey(key);
 
         if (result.isPresent())
-            return  this.repository.findURLByKey(key);
+            return result;
         else
             throw new URLNotFoundException();
     }

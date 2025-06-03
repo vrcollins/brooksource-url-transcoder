@@ -8,13 +8,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.brooksource.urltranscoder.business.exception.URLAlreadyExistsException;
+import com.brooksource.urltranscoder.business.exception.URLNotFoundException;
 import com.brooksource.urltranscoder.business.service.ITranscoder;
-import com.brooksource.urltranscoder.model.request.URLRequest;
 import com.brooksource.urltranscoder.model.response.URLResponse;
 
 /**
@@ -35,26 +34,29 @@ import com.brooksource.urltranscoder.model.response.URLResponse;
  * @version <b>0.1.0</b>
  */
 @RestController
-@Scope(proxyMode = ScopedProxyMode.INTERFACES)
+@Scope(proxyMode = ScopedProxyMode.DEFAULT)
 public class DecoderController {
 
     @Autowired
     @Qualifier("transcoderManager")
     private ITranscoder manager;
 
-    @PostMapping("/encoding")
-    public ResponseEntity<Object> addURL (@RequestBody final URLRequest request) {
+    @GetMapping(value = "/decode", produces = "application/json")
+    public ResponseEntity<Object> retrieveURL (@RequestParam final String url) {
 
         try {
-            Optional<String> theUrl = this.manager.encode(request.getUrl());
-            URLResponse url = new URLResponse();
-            url.setUrl(theUrl.get());
-            return new ResponseEntity<>(url, HttpStatus.CREATED);
+            Optional<String> theUrl = this.manager.decode(url);
+            URLResponse urlResponse = new URLResponse();
+            urlResponse.setUrl(theUrl.get());
+            return new ResponseEntity<>(urlResponse, HttpStatus.OK);
         }
-        catch (URLAlreadyExistsException ex) {
-            ex.getUrl();
+        catch (URLNotFoundException ex) {
             URLResponse response = new URLResponse();
-            return new ResponseEntity<>(response, HttpStatus.ALREADY_REPORTED);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception ext) {
+            URLResponse response = new URLResponse();
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
 
     }
