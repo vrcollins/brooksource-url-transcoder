@@ -64,16 +64,20 @@ public class URLRepository implements IURLRepository{
         }
     }
 
+    /**
+     * This method will return the key based on the value passed in
+     * @param value - value of the key/value pair
+     * @return Optional - the key
+     */
     protected Optional<String> findKeyByValue(final String value) {
 
-        Stream<String> key = this.datastore
+        final Stream<String> key = this.datastore
                 .entrySet()
                 .stream()
                 .filter(entry -> value.equals(entry.getValue()))
                 .map(Map.Entry::getKey);
 
         return key.findFirst();
-
     }
 
 }
